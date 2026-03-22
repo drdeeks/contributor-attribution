@@ -112,7 +112,7 @@ export class AppError extends Error {
   public readonly requestId?: string;
   public readonly userActions: string[];
   public readonly context: Record<string, unknown>;
-  public override readonly cause?: Error;
+  public readonly errorCause?: Error;
 
   constructor(
     code: ErrorCode,
@@ -139,7 +139,7 @@ export class AppError extends Error {
     this.context = options.context ?? {};
     
     if (options.cause) {
-      this.cause = options.cause;
+      this.errorCause = options.cause;
     }
 
     // Capture stack trace
@@ -165,7 +165,7 @@ export class AppError extends Error {
     return {
       code: this.code,
       message: this.message,
-      details: this.cause instanceof Error ? this.cause.message : undefined,
+      details: this.errorCause instanceof Error ? this.errorCause.message : undefined,
       timestamp: this.timestamp,
       requestId: this.requestId,
       category: this.category,
