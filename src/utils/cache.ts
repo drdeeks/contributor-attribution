@@ -281,9 +281,9 @@ export function memoize<T extends (...args: unknown[]) => Promise<unknown>>(
   const cache = options.cache ?? new Cache({ maxSize: 100 });
   const keyFn = options.keyFn ?? ((...args) => createCacheKey(...args.map(a => JSON.stringify(a))));
 
-  return (async (...args: Parameters<T>): Promise<ReturnType<T>> => {
+  return (async (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
     const key = keyFn(...args);
-    return cache.getOrCompute(key, () => fn(...args) as Promise<ReturnType<T>>, options.ttlMs);
+    return cache.getOrCompute(key, () => fn(...args), options.ttlMs) as Promise<Awaited<ReturnType<T>>>;
   }) as T;
 }
 
