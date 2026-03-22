@@ -183,9 +183,19 @@ export class ContributionEngine {
     const maxScore = this.config.normalization.maxScore;
 
     if (scores.length === 0) return scores;
+    
+    // Handle single contributor case
+    if (scores.length === 1) {
+      return scores.map(score => ({ ...score, score: maxScore }));
+    }
 
     const maxRawScore = Math.max(...scores.map(s => s.score));
     const minRawScore = Math.min(...scores.map(s => s.score));
+    
+    // Handle case where all scores are equal
+    if (maxRawScore === minRawScore) {
+      return scores.map(score => ({ ...score, score: (minScore + maxScore) / 2 }));
+    }
 
     return scores.map(score => {
       const normalized = ((score.score - minRawScore) / (maxRawScore - minRawScore)) * (maxScore - minScore) + minScore;
