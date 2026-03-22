@@ -112,6 +112,7 @@ export class AppError extends Error {
   public readonly requestId?: string;
   public readonly userActions: string[];
   public readonly context: Record<string, unknown>;
+  public override readonly cause?: Error;
 
   constructor(
     code: ErrorCode,
@@ -247,7 +248,8 @@ export class AIError extends AppError {
       cause?: Error;
     } = {}
   ) {
-    const retryable = [ErrorCodes.AI_002, ErrorCodes.AI_003, ErrorCodes.AI_007].includes(code);
+    const retryableCodes: ErrorCode[] = [ErrorCodes.AI_002, ErrorCodes.AI_003, ErrorCodes.AI_007];
+    const retryable = retryableCodes.includes(code);
     super(code, message, {
       category: ErrorCategory.AI,
       severity: code === ErrorCodes.AI_003 ? ErrorSeverity.LOW : ErrorSeverity.MEDIUM,
