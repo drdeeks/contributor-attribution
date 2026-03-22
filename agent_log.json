@@ -1,0 +1,16 @@
+{
+  "agent": "Titan",
+  "harness": "openclaw",
+  "model": "claude-opus-4-6",
+  "onChainActivity": {
+    "summary": "Agent shares wallet 0x9D65433B3FE597C15a46D2365F8F2c1701Eb9e4A with 48 mainnet txs on Base + Optimism.",
+    "walletAddress": "0x9D65433B3FE597C15a46D2365F8F2c1701Eb9e4A"
+  },
+  "decisions": [
+    {"timestamp": "2026-03-14T01:00:00Z", "decision": "Build attribution engine as CLI tool", "reasoning": "CLI enables CI/CD integration — run attribution on every PR merge via GitHub Actions"},
+    {"timestamp": "2026-03-18T00:00:00Z", "decision": "Use Venice AI for contribution weighting", "reasoning": "LLM analysis can differentiate architectural decisions from formatting changes — something LOC counting can't do"},
+    {"timestamp": "2026-03-19T00:00:00Z", "decision": "Output Slice payment splits", "reasoning": "Slice protocol enables on-chain payment distribution. Attribution → split percentages → automated fair compensation"},
+    {"timestamp": "2026-03-22T02:30:00Z", "decision": "Enterprise hardening via sub-agent", "reasoning": "Added structured errors, input validation, LRU cache, Merkle tree for verifiable credential proofs, ARCHITECTURE.md"}
+  ],
+  "outputs": {"commits": 17, "testsWritten": 30, "linesOfCode": 3100}
+}
