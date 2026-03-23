@@ -88,6 +88,14 @@ export interface VeniceAIResponse {
   };
 }
 
+export interface VeniceScoreBreakdown {
+  architectural: number;
+  bugfix: number;
+  feature: number;
+  docs: number;
+  formatting: number;
+}
+
 export interface ContributionScore {
   contributor: string;
   score: number;
@@ -114,6 +122,7 @@ export interface ContributionScore {
     complexityScore: number;
     contextAwareness: number;
   };
+  veniceBreakdown?: VeniceScoreBreakdown;
   timestamp: Date;
 }
 

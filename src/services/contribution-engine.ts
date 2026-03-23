@@ -1,6 +1,12 @@
-import { ContributionScore, ContributorMetrics, ContributionAnalysis, SlicePaymentConfig, TalentProtocolCredential } from '../types';
+import { ContributionScore, ContributorMetrics, ContributionAnalysis, SlicePaymentConfig, TalentProtocolCredential, GitCommit } from '../types';
 import { logger } from '../utils/logger';
 import * as crypto from 'crypto';
+import { 
+  isVeniceAvailable, 
+  scoreCommitsWithVenice, 
+  VeniceAssessment,
+  ContributorCommits 
+} from './veniceService';
 
 export class ContributionEngine {
   private config: {
@@ -66,13 +72,64 @@ export class ContributionEngine {
       totalDeletions: number;
       totalFilesChanged: number;
       timespanDays: number;
-    }
+    },
+    commits?: GitCommit[]
   ): Promise<ContributionScore[]> {
     logger.info('Computing contribution scores');
 
-    const scores = contributors.map(contrib => {
+    // Check if Venice AI should be used
+    const useVenice = this.config.aiAssessment.enabled && isVeniceAvailable();
+    if (useVenice) {
+      logger.info('Venice AI scoring enabled');
+    }
+
+    // Group commits by contributor for AI scoring
+    const commitsByContributor = new Map<string, GitCommit[]>();
+    if (commits && useVenice) {
+      for (const commit of commits) {
+        const email = commit.author.email.toLowerCase();
+        if (!commitsByContributor.has(email)) {
+          commitsByContributor.set(email, []);
+        }
+        commitsByContributor.get(email)!.push(commit);
+      }
+    }
+
+    // Process each contributor
+    const scorePromises = contributors.map(async (contrib) => {
       const timeDecay = this.calculateTimeDecay(contrib, analysis.timespanDays);
-      const baseScore = this.calculateBaseScore(contrib, analysis);
+      let baseScore = this.calculateBaseScore(contrib, analysis);
+      let veniceAssessment: VeniceAssessment | null = null;
+
+      // Apply Venice AI scoring if enabled
+      if (useVenice) {
+        const contributorCommits = commitsByContributor.get(contrib.email.toLowerCase()) || [];
+        
+        if (contributorCommits.length > 0) {
+          const contribData: ContributorCommits = {
+            contributor: contrib.email,
+            commits: contributorCommits.map(c => ({
+              hash: c.hash,
+              message: c.message,
+              files: c.files
+            }))
+          };
+
+          try {
+            veniceAssessment = await scoreCommitsWithVenice(contribData);
+            
+            // Apply Venice multiplier to base score
+            // Venice score is 0-100, normalize to 0.5-1.5 multiplier
+            const veniceMultiplier = 0.5 + (veniceAssessment.score / 100);
+            baseScore = baseScore * veniceMultiplier;
+            
+            logger.debug(`Venice score for ${contrib.email}: ${veniceAssessment.score.toFixed(2)} (multiplier: ${veniceMultiplier.toFixed(2)})`);
+          } catch (error) {
+            logger.warn(`Venice scoring failed for ${contrib.email}, using base score`, { error });
+          }
+        }
+      }
+
       const weightedScore = baseScore * timeDecay;
 
       return {
@@ -95,11 +152,18 @@ export class ContributionEngine {
           issuesResolved: 0, // Would need issue data
           reviewsCompleted: 0 // Would need review data
         },
-        aiAssessment: null,
+        aiAssessment: veniceAssessment ? {
+          impactAssessment: veniceAssessment.reasoning || '',
+          qualityScore: veniceAssessment.score,
+          complexityScore: veniceAssessment.breakdown.architectural,
+          contextAwareness: veniceAssessment.confidence * 100
+        } : undefined,
+        veniceBreakdown: veniceAssessment?.breakdown,
         timestamp: new Date()
       };
     });
 
+    const scores = await Promise.all(scorePromises);
     return this.normalizeScores(scores);
   }
 

@@ -97,7 +97,7 @@ export class MerkleTree {
       nextLevel.push({
         hash: parentHash,
         left,
-        right: nodes[i + 1] ? right : undefined,
+        right, // always store (may be duplicate of left for odd trees)
       });
     }
 
@@ -135,14 +135,13 @@ export class MerkleTree {
 
     while (levelNodes.length > 1) {
       const pairIndex = currentIndex % 2 === 0 ? currentIndex + 1 : currentIndex - 1;
-      const siblingNode = levelNodes[pairIndex] ?? levelNodes[currentIndex]; // Handle odd case
+      // For odd last leaf, it pairs with itself (duplicate)
+      const siblingNode = levelNodes[pairIndex] ?? levelNodes[currentIndex];
 
-      if (pairIndex < levelNodes.length && pairIndex !== currentIndex) {
-        siblings.push({
-          hash: siblingNode.hash,
-          position: currentIndex % 2 === 0 ? 'right' : 'left',
-        });
-      }
+      siblings.push({
+        hash: siblingNode.hash,
+        position: currentIndex % 2 === 0 ? 'right' : 'left',
+      });
 
       // Move to parent level
       const nextLevel: MerkleNode[] = [];
@@ -174,11 +173,8 @@ export class MerkleTree {
     let currentHash = proof.leaf;
 
     for (const sibling of proof.siblings) {
-      if (sibling.position === 'left') {
-        currentHash = this.hashPair(sibling.hash, currentHash);
-      } else {
-        currentHash = this.hashPair(currentHash, sibling.hash);
-      }
+      // hashPair always sorts, so position doesn't matter — just pass both
+      currentHash = this.hashPair(currentHash, sibling.hash);
     }
 
     return currentHash === proof.root;
