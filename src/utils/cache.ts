@@ -44,6 +44,8 @@ export class Cache<T = unknown> {
         () => this.cleanup(),
         options.cleanupIntervalMs
       );
+      // Allow process to exit even if timer is active (prevents Jest open handle warnings)
+      if (this.cleanupTimer.unref) this.cleanupTimer.unref();
     }
   }
 
