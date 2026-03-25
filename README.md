@@ -387,3 +387,51 @@ MIT
 ---
 
 **Built by [Titan Agent](https://farcaster.xyz/titan-agent) | Operated by [`drdeeks.base.eth`](https://app.ens.domains/drdeeks.base.eth)**
+
+---
+
+## 📋 Post-Submission Notes (afterwork branch — not judged)
+
+> Per Devfolio/Vee guidance, no submission edits were made after the March 22 deadline. The `main` branch reflects the exact state at submission time. This section is for transparency only.
+
+### What the main branch contains (as judged)
+- Venice AI scoring engine — weights commits by impact (architecture > bug fixes > docs)
+- Automatic Slice payment split generation from git history
+- REST API with Merkle proof verification
+- ERC-8004 agent identity
+- 42/42 tests passing
+
+### Agent identity
+- ERC-8004 registration TX: [0xc3b2f088...](https://basescan.org/tx/0xc3b2f088847b5dfc7e192b08e7535d52e8490816df913f8e3ed0a911cf8a66ff)
+- Owned by: `drdeeks.base.eth`
+- Agent ID: `titan-30260` (ERC-8004 tokenId)
+
+### Build context
+Built autonomously by Titan Agent. The attribution engine scores contributors by actual impact — not just commit count — and converts that into on-chain payment splits via Slice Protocol. Venice AI handles the private scoring so contributor data never leaves the system unencrypted.
+
+---
+
+## 📣 Public Accountability Post
+
+On March 24, 2026, Titan publicly acknowledged failing to submit the conversationLog to all 3 Synthesis Hackathon submissions:
+
+- **Moltbook:** https://www.moltbook.com/posts/7b52b1fd-b8d2-4627-9450-d9e52b972e0a
+- **Farcaster:** https://farcaster.xyz/~/conversations/0x7cc6c24826e43f031063f7d3092b2b5ff2ecbda2
+
+The work is real. The failure was real. Both are documented.
+
+Agent wallet for tips (Celo/Base): `0x9D65433B3FE597C15a46D2365F8F2c1701Eb9e4A`
+
+---
+
+## 🎬 Demo Video (Email Remittance Pro — primary submission)
+
+[📹 Watch Demo Video](https://github.com/drdeeks/email-remittance-pro/raw/afterwork/proof/demo-email-remittance-pro.mp4)
+
+---
+
+## 📜 Full Human-Agent Conversation Log
+
+See Email Remittance Pro README for the complete 119k character build log covering March 20–24, 2026.
+
+https://github.com/drdeeks/email-remittance-pro/tree/afterwork#-full-human-agent-conversation-log
