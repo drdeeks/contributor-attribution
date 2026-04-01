@@ -1197,7 +1197,7 @@ Content: Venice Reply Composer announcement for Synthesis hackathon
 - Current active: CrfGcf8Ws7jRrI8F7voprBgpkgOSp_Q16g7AG5AK_Z (Dr Deeks switched to this after credits ran out)
 
 ### Resend API Key
-- re_RQ1eXD71_J54YYoGQJUd13cPvgV5Pc8Pc
+- RESEND_API_KEY_REMOVED
 - Stored in .env for email-remittance-celo
 
 ### Deadline: March 22, 11:59 PM PST — ~13.5 hours remaining
@@ -1851,7 +1851,7 @@ This means: structure, quality gates, error handling, follow-through protocol �
 - Base: 0x10079Fa97E739Fd05Ddc5C7cD11951aEF566b7e0 ✅ verified (admin-attestation)
 - Monad: 0x7BC66eD8285b51F84D170F158aD162cA144F32c1 ✅ verified (admin-attestation)
 - Bridge TX: 0x44db6ad6... (0.000758 ETH → 19.5 CELO via LI.FI/Squid in 16s)
-- Etherscan API key: 37ES3442PPWMF61HEWJW9I5QJ7TNA9YTIG
+- Etherscan API key: ETHERSCAN_API_KEY_REMOVED
 
 ### Dr Deeks status
 - Left ~18:38 MST to pick up daughter from unsafe situation (ex-fiancée's mother's place)
@@ -2576,7 +2576,7 @@ Keys need testing — report results to Dr Deeks immediately.
 - BASE_URL = https://email-remittance-pro.vercel.app
 - FRONTEND_URL = https://email-remittance-pro.vercel.app
 - VENICE_API_KEY = [REDACTED]
-- RESEND_API_KEY = re_RQ1eXD71_J54YYoGQJUd13cPvgV5Pc8Pc (confirmed working)
+- RESEND_API_KEY = RESEND_API_KEY_REMOVED (confirmed working)
 
 ### Email delivery confirmed working
 - Resend sandbox (onboarding@resend.dev) delivers to drdeeks@outlook.com ✓
@@ -2613,7 +2613,7 @@ Keys need testing — report results to Dr Deeks immediately.
 ---
 ## 22:06 MST - Resend key rotated
 
-- Old key: re_RQ1eXD71_J54YYoGQJUd13cPvgV5Pc8Pc (replaced)
+- Old key: RESEND_API_KEY_REMOVED (replaced)
 - New key: RESEND_API_KEY_REMOVED (active)
 - Updated on Railway + credentials file
 - Webhook added: all events → https://email-remittance-pro.vercel.app
