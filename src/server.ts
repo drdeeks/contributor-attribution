@@ -149,8 +149,33 @@ app.post('/analyze', async (req: Request, res: Response, next: NextFunction) => 
         version: '1.0.0',
         analysisVersion: '1.0.0',
         timestamp: new Date().toISOString()
-      }
+      },
+      // PL_Genesis integrations
+      worldIdVerified: !!req.headers['x-world-id-token'],
+      litSignature: undefined, // will be added after generation
+      agentLog: undefined
     };
+
+    // PL_Genesis: generate agent log and mock Lit signature
+    const totalValue = 1000; // default for Slice config
+    const agentLog: AgentLog = {
+      agentId: process.env.AGENT_ID || 'contrib-attrib-agent',
+      operator: process.env.OPERATOR_WALLET || '0x0000000000000000000000000000000000000000',
+      timestamp: new Date().toISOString(),
+      action: 'analyze_repository',
+      input: { repoPath, aiEnabled, commitCount: totals.totalCommits, contributorCount: repoAnalysis.contributors.length },
+      output: { analysisId, scoreCount: scores.length, totalValue },
+      decision: 'auto-approved',
+      success: true,
+    };
+
+    // Mock Lit signature (in production, use real Lit Protocol)
+    const litSignature = `lit_${Buffer.from(JSON.stringify(agentLog)).toString('hex').slice(0, 64)}`;
+
+    // Attach PL_Genesis fields to response
+    analysis.worldIdVerified = !!req.headers['x-world-id-token'];
+    analysis.litSignature = litSignature;
+    analysis.agentLog = agentLog;
 
     res.json(analysis);
   } catch (error) {
