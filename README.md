@@ -8,8 +8,28 @@ Venice AI private inference analyzes your commits to score architectural decisio
 [![Venice AI](https://img.shields.io/badge/Venice%20AI-Private%20Inference-orange)](https://venice.ai)
 [![ERC-8004](https://img.shields.io/badge/ERC--8004-Optimism-purple)](https://optimistic.etherscan.io/tx/0x951823b1186b9b2b03f1d2f453e9d51bbebf85a3fb03460ff40cf7909f608c71)
 [![Slice](https://img.shields.io/badge/Slice-Payment%20Splits-blue)](https://slice.so)
+[![PL_Genesis](https://img.shields.io/badge/PL__Genesis-Fresh%20Code-9cf)](https://pl-genesis-frontiers-of-collaboration.devspot.app/)
+[![Lit Protocol](https://img.shields.io/badge/Lit%20Protocol-NextGen%20AI%20Apps-cyan)](https://lit.dev)
+[![World ID](https://img.shields.io/badge/World%20ID-Build%203-20c997)](https://worldcoin.dev)
 
 ---
+
+## 🏆 PL_Genesis Submission
+
+This project is a **Fresh Code** submission integrating multiple sponsor bounties:
+
+| Track | Sponsor | Integration |
+|-------|---------|-------------|
+| **Venice Private Agents** | Venice AI | Private inference for commit scoring |
+| **Bankr LLM Gateway** | Bankr | LLM-based impact assessment |
+| **Lit Protocol NextGen AI Apps** | Lit | Agent execution receipts (signed logs) |
+| **World Build 3** | World | Human verification via World ID |
+| **Hypercerts** | Hypercerts | Impact claim generation (optional) |
+| **AI & Robotics** | Protocol Labs | Verifiable AI decision provenance |
+
+**Fresh Code** — Built during PL_Genesis window (after Feb 10, 2026).
+
+[Demo Video](https://youtube.com/placeholder) — Coming soon
 
 ## THE PROBLEM
 

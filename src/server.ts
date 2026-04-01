@@ -9,7 +9,7 @@ import { ContributionEngine } from './services/contribution-engine';
 import { isVeniceAvailable } from './services/veniceService';
 import { createContributionMerkleRoot, MerkleProof } from './utils/merkle';
 import { logger } from './utils/logger';
-import { ContributionAnalysis } from './types';
+import { ContributionAnalysis, AgentLog } from './types';
 import * as path from 'path';
 
 const app = express();
@@ -220,7 +220,48 @@ app.post('/merkle', async (req: Request, res: Response, next: NextFunction) => {
       proofsObject[contributor] = proof;
     });
 
+    // Build agent log structure (what an autonomous agent would produce)
+    const agentLog = {
+      agentId: process.env.AGENT_ID || 'contrib-attrib-agent-001',
+      operator: process.env.OPERATOR_WALLET || '0x9D65433B3FE597C15a46D2365F8F2c1701Eb9e4A',
+      timestamp: new Date().toISOString(),
+      action: 'analyze_contributions',
+      input: { repoPath: analysis.repository },
+      output: {
+        totalContributors: analysis.totalContributors,
+        totalCommits: analysis.totalCommits,
+        topContributor: analysis.contributionScores[0]?.contributor,
+        sliceGenerated: false
+      },
+      decision: 'analysis_complete',
+      success: true
+    };
+
+    // PL_Genesis integrations
+    // 1. World ID verification (mocked: any non-empty token passes)
+    const worldIdToken = req.headers['x-world-id-token'] as string | undefined;
+    analysis.worldIdVerified = !!worldIdToken && worldIdToken.length > 10;
+
+    // 2. Lit Protocol signing (mocked: HMAC-SHA256 with dummy key)
+    try {
+      const message = JSON.stringify(agentLog);
+      const encoder = new TextEncoder();
+      const secret = process.env.LIT_SECRET || 'demo-secret';
+      const data = encoder.encode(message + secret);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const signatureArray = Array.from(new Uint8Array(hashBuffer))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+      analysis.litSignature = `lit_${signatureArray}`;
+      analysis.litSignedAt = new Date().toISOString();
+    } catch (err) {
+      logger.warn('Lit signing failed', { error: err });
+      analysis.litSignature = undefined;
+    }
+    analysis.agentLog = agentLog; // always include agent log
+
     res.json({
+      analysis, // includes litSignature, worldIdVerified, agentLog
       root,
       depth: tree.getDepth(),
       leafCount: contributions.length,

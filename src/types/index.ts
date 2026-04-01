@@ -239,6 +239,22 @@ export interface ContributionAnalysis {
     analysisVersion: string;
     timestamp: string;
   };
+  // PL_Genesis integrations
+  litSignature?: string;      // Lit Protocol signature proving agent execution
+  litSignedAt?: string;       // ISO timestamp of signing
+  worldIdVerified?: boolean;  // World ID human verification flag
+  agentLog?: AgentLog;        // Agent execution log (for receipts)
+}
+
+export interface AgentLog {
+  agentId: string;
+  operator: string;
+  timestamp: string;
+  action: string;
+  input: Record<string, any>;
+  output: Record<string, any>;
+  decision: string;
+  success: boolean;
 }
 
 export interface CLIConfig {

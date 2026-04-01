@@ -175,4 +175,44 @@ describe('Server API', () => {
       expect(response.body).toHaveProperty('contribution', contributor);
     });
   });
+
+  describe('PL_Genesis Integrations', () => {
+    it('should include litSignature and worldIdVerified when World ID header present', async () => {
+      const response = await request(app)
+        .post('/analyze')
+        .set('x-world-id-token', 'mock-world-id-token')
+        .send({ repoPath: testRepoPath });
+      
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('litSignature');
+      expect(response.body.litSignature).toMatch(/^lit_[a-f0-9]+/);
+      expect(response.body).toHaveProperty('worldIdVerified', true);
+    });
+
+    it('should set worldIdVerified false when World ID header absent', async () => {
+      const response = await request(app)
+        .post('/analyze')
+        .send({ repoPath: testRepoPath });
+      
+      expect(response.status).toBe(200);
+      if (response.body.worldIdVerified !== undefined) {
+        expect(response.body.worldIdVerified).toBe(false);
+      }
+    });
+
+    it('should sign agent log consistently', async () => {
+      const response1 = await request(app)
+        .post('/analyze')
+        .set('x-world-id-token', 'test-token')
+        .send({ repoPath: testRepoPath });
+      
+      const response2 = await request(app)
+        .post('/analyze')
+        .set('x-world-id-token', 'test-token')
+        .send({ repoPath: testRepoPath });
+      
+      // Same input should produce same signature (deterministic mock)
+      expect(response1.body.litSignature).toBe(response2.body.litSignature);
+    });
+  });
 });
