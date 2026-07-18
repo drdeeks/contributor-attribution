@@ -1,8 +1,5 @@
 # Contributor Attribution Engine
 
-[![DrDeeks Project](https://img.shields.io/badge/DrDeeks%20Project-171718?style=flat-square&labelColor=b84d32)](https://github.com/drdeeks)
-
-
 **AI judges your IMPACT, not your line count — and pays you for it.**
 
 Venice AI private inference analyzes your commits to score architectural decisions highest, bug fixes next, then features, docs, formatting. The output is a Slice payment config: when your project earns revenue, contributors get paid proportionally. No manual tracking. No subjective guesswork. Cryptographically verifiable attribution via Merkle proofs.
@@ -448,7 +445,6 @@ Agent wallet for tips (Celo/Base): `0x9D65433B3FE597C15a46D2365F8F2c1701Eb9e4A`
 ---
 
 ## 🎬 Demo Video (Email Remittance Pro — primary submission)
-
 
 ---
 
